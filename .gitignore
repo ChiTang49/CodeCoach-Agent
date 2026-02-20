@@ -24,7 +24,7 @@ venv.bak/
 *~
 
 
-# hello-agents 数据库
+# hello-agents 数据�?
 *.db
 *.sqlite
 *.sqlite3
@@ -61,3 +61,9 @@ node_modules/
 
 # Next.js build
 frontend/.next/
+
+# Demo Page for Screenshots
+frontend/app/demo/
+
+
+

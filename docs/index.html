@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeCoach Agent - 智能算法学习助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gray: {
+                            900: '#111827',
+                            950: '#030712',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #030712; color: white; font-family: 'Inter', system-ui, sans-serif; }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4ade80 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .grid-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+        }
+        .lang-active {
+            color: #4ade80;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden relative">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 grid-bg z-0 pointer-events-none"></div>
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-green-500/20 rounded-full blur-[128px] pointer-events-none"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[128px] pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <nav class="relative z-50 px-6 py-6 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="flex items-center gap-3">
+            <div class="p-2 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-xl border border-white/10">
+                <i data-lucide="terminal" class="w-6 h-6 text-green-400"></i>
+            </div>
+            <span class="text-xl font-bold tracking-tight">CodeCoach <span class="font-normal text-gray-400">Agent</span></span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2 text-sm font-medium border border-white/10 rounded-full px-1 py-1 bg-white/5">
+                <button onclick="setLang('zh')" id="btn-zh" class="px-3 py-1 rounded-full transition-all lang-active">中</button>
+                <button onclick="setLang('en')" id="btn-en" class="px-3 py-1 rounded-full text-gray-400 hover:text-white transition-all">EN</button>
+            </div>
+            <a href="https://github.com/ChiTang49/CodeCoach-Agent" target="_blank" class="hidden sm:flex items-center gap-2 text-white bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all border border-white/10">
+                <i data-lucide="github" class="w-4 h-4"></i> <span data-i18n="github">GitHub 仓库</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="relative z-10 pt-16 pb-24 max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
+        
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-xs text-green-400 mb-8 border-green-500/30 animate-fade-in">
+            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            <span data-i18n="status">v2.0 架构发布 &middot; 去除 Streamlit 依赖</span>
+        </div>
+
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-8 leading-tight animate-fade-in" style="animation-delay: 0.1s">
+            <span data-i18n="hero_title_1">算法学习的</span> <br/>
+            <span class="gradient-text" data-i18n="hero_title_2">智能 Agent 教练</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-gray-400 max-w-2xl mb-12 leading-relaxed animate-fade-in" style="animation-delay: 0.2s" data-i18n="hero_desc">
+            告别传统死记硬背。CodeCoach 采用 <strong>多 Agent 协作</strong> 和 <strong>RAG 检索增强生成</strong> 技术，为您量身定制算法竞赛学习路径。
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 mb-20 animate-fade-in" style="animation-delay: 0.3s">
+            <a href="https://github.com/ChiTang49/CodeCoach-Agent" target="_blank" class="px-8 py-4 bg-white text-black hover:bg-gray-200 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/10 hover:scale-105">
+                <i data-lucide="github" class="w-5 h-5 fill-current"></i>
+                <span data-i18n="btn_start">查看源码</span>
+            </a>
+            <button class="px-8 py-4 glass-panel hover:bg-white/5 text-white rounded-xl font-semibold transition-all flex items-center justify-center gap-2 border-white/10 hover:border-white/20 cursor-default">
+                <i data-lucide="cpu" class="w-5 h-5"></i>
+                <span data-i18n="btn_tech">基于 FastAPI + Next.js</span>
+            </button>
+        </div>
+
+        <!-- Dashboard Preview Mockup -->
+        <div class="relative w-full max-w-5xl group perspective-1000 animate-fade-in" style="animation-delay: 0.4s">
+            <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+            <div class="relative glass-panel rounded-xl p-2 border-white/10 shadow-2xl animate-float">
+                <!-- Browser Bar -->
+                <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-black/40 rounded-t-lg">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                    </div>
+                    <div class="ml-4 flex-1 text-center">
+                        <div class="inline-block px-3 py-1 bg-white/5 rounded text-xs text-gray-500 font-mono">localhost:3000</div>
+                    </div>
+                </div>
+                <!-- Content Mockup -->
+                <div class="grid grid-cols-12 h-[400px] md:h-[500px] bg-[#0B0F19] text-left overflow-hidden rounded-b-lg">
+                    <!-- Sidebar -->
+                    <div class="hidden md:flex col-span-3 border-r border-white/5 p-4 flex-col gap-4 bg-[#080a11]">
+                        <div class="p-4 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium">
+                            + <span data-i18n="ui_new_chat">新建会话</span>
+                        </div>
+                        <div class="flex-1 space-y-2">
+                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2" data-i18n="ui_history">历史记录</div>
+                            <div class="p-3 rounded-lg bg-white/5 text-sm text-gray-300 border-l-2 border-green-500">
+                                <span data-i18n="ui_history_1">动态规划基础</span>
+                            </div>
+                            <div class="p-3 rounded-lg hover:bg-white/5 text-sm text-gray-500 transition">
+                                <span data-i18n="ui_history_2">线段树入门</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chat Area -->
+                    <div class="col-span-12 md:col-span-6 p-6 flex flex-col">
+                        <div class="flex-1 space-y-6">
+                            <!-- User Message -->
+                            <div class="flex justify-end">
+                                <div class="bg-gray-800 text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[80%] text-sm shadow-sm" data-i18n="ui_user_msg">
+                                    我想学习“0/1背包问题”。
+                                </div>
+                            </div>
+                            <!-- AI Message -->
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+                                <div class="space-y-3 max-w-[90%]">
+                                    <div class="text-sm font-semibold text-green-400">Teaching Agent</div>
+                                    <div class="text-gray-300 text-sm leading-relaxed">
+                                        <span data-i18n="ui_ai_msg"><strong>0/1背包问题</strong> 是动态规划的经典问题。<br/><br/>给定一组物品，每种物品都有自己的重量和价值，在限定的总重量内，我们如何选择，才能使得物品的总价值最高。</span>
+                                    </div>
+                                    <div class="p-4 rounded-lg bg-black/30 border border-white/10 font-mono text-xs text-blue-300 overflow-x-auto">
+                                        dp[i][w] = max(dp[i-1][w], dp[i-1][w-wt[i]] + val[i])
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Panel -->
+                    <div class="hidden md:block col-span-3 border-l border-white/5 p-4 bg-[#080a11]">
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4" data-i18n="ui_memory">记忆库</div>
+                        <div class="space-y-3">
+                            <div class="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+                                <div class="text-xs text-yellow-500 font-bold mb-1" data-i18n="ui_knowledge">知识点</div>
+                                <div class="text-xs text-gray-400" data-i18n="ui_knowledge_desc">已掌握 DP 状态转移方程推导。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Features Grid -->
+    <section class="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-3 gap-8 text-left">
+        <div class="glass-panel p-8 rounded-2xl hover:bg-white/5 transition duration-300 border-t-2 border-t-purple-500/50">
+            <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-6">
+                <i data-lucide="brain-circuit" class="text-purple-400"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3" data-i18n="feat_1_title">多 Agent 核心协作</h3>
+            <p class="text-gray-400 text-sm leading-relaxed" data-i18n="feat_1_desc">
+                分工明确：<strong>需求分析</strong>、<strong>教学</strong>、<strong>推荐</strong> 和 <strong>评审</strong> Agent 并行工作，提供全方位的学习体验。
+            </p>
+        </div>
+        <div class="glass-panel p-8 rounded-2xl hover:bg-white/5 transition duration-300 border-t-2 border-t-blue-500/50">
+            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-6">
+                <i data-lucide="database" class="text-blue-400"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3" data-i18n="feat_2_title">RAG + Qdrant 检索</h3>
+            <p class="text-gray-400 text-sm leading-relaxed" data-i18n="feat_2_desc">
+                混合检索技术：结合 <strong>稠密向量</strong> 和 <strong>SPLADE 稀疏向量</strong>，确保 AI 教授准确、经过验证的算法知识，拒绝幻觉。
+            </p>
+        </div>
+        <div class="glass-panel p-8 rounded-2xl hover:bg-white/5 transition duration-300 border-t-2 border-t-orange-500/50">
+            <div class="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center mb-6">
+                <i data-lucide="layers" class="text-orange-400"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3" data-i18n="feat_3_title">长期记忆机制</h3>
+            <p class="text-gray-400 text-sm leading-relaxed" data-i18n="feat_3_desc">
+                系统记得你的弱点。“上周我没听懂递归” —— CodeCoach 会记得这一点，并在后续教学中自动调整难度和解释方式。
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 mt-12 py-12 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 CodeCoach Agent Project. Open Source under MIT License.</p>
+        <p class="mt-2 text-gray-600">Built with FastAPI, Next.js, and Hello-Agents.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const translations = {
+            zh: {
+                github: "GitHub 仓库",
+                status: "v2.0 架构发布 · 去除 Streamlit 依赖",
+                hero_title_1: "算法学习的",
+                hero_title_2: "智能 Agent 教练",
+                hero_desc: "告别传统死记硬背。CodeCoach 采用 <strong>多 Agent 协作</strong> 和 <strong>RAG 检索增强生成</strong> 技术，为您量身定制算法竞赛学习路径。",
+                btn_start: "查看源码",
+                btn_tech: "基于 FastAPI + Next.js",
+                ui_new_chat: "新建会话",
+                ui_history: "历史记录",
+                ui_history_1: "动态规划基础",
+                ui_history_2: "线段树入门",
+                ui_user_msg: "我想学习“0/1背包问题”。",
+                ui_ai_msg: "<strong>0/1背包问题</strong> 是动态规划的经典问题。<br/><br/>给定一组物品，每种物品都有自己的重量和价值，在限定的总重量内，我们如何选择，才能使得物品的总价值最高。",
+                ui_memory: "记忆库",
+                ui_knowledge: "知识点",
+                ui_knowledge_desc: "已掌握 DP 状态转移方程推导。",
+                feat_1_title: "多 Agent 核心协作",
+                feat_1_desc: "分工明确：<strong>需求分析</strong>、<strong>教学</strong>、<strong>推荐</strong> 和 <strong>评审</strong> Agent 并行工作，提供全方位的学习体验。",
+                feat_2_title: "RAG + Qdrant 检索",
+                feat_2_desc: "混合检索技术：结合 <strong>稠密向量</strong> 和 <strong>SPLADE 稀疏向量</strong>，确保 AI 教授准确、经过验证的算法知识，拒绝幻觉。",
+                feat_3_title: "长期记忆机制",
+                feat_3_desc: "系统记得你的弱点。“上周我没听懂递归” —— CodeCoach 会记得这一点，并在后续教学中自动调整难度和解释方式。"
+            },
+            en: {
+                github: "GitHub Repo",
+                status: "v2.0 Architecture · Streamlit Removed",
+                hero_title_1: "The Intelligent Agent for",
+                hero_title_2: "Algorithm Mastery",
+                hero_desc: "Stop struggling with rote memorization. CodeCoach uses <strong>Multi-Agent Collaboration</strong> and <strong>RAG</strong> to create a personalized, competitive programming curriculum just for you.",
+                btn_start: "View Source",
+                btn_tech: "Built with FastAPI + Next.js",
+                ui_new_chat: "New Session",
+                ui_history: "History",
+                ui_history_1: "DP Basics",
+                ui_history_2: "Segment Trees",
+                ui_user_msg: "I want to learn 'Knapsack Problem'.",
+                ui_ai_msg: "The <strong>0/1 Knapsack Problem</strong> is a classic DP problem.<br/><br/>Given a set of items, each with a weight and a value, determine which items to include so that the total weight is less than or equal to a given limit.",
+                ui_memory: "Memory Bank",
+                ui_knowledge: "Knowledge",
+                ui_knowledge_desc: "Understanding of DP state transition confirmed.",
+                feat_1_title: "Multi-Agent Core",
+                feat_1_desc: "Separation of concerns: <strong>Requirement</strong>, <strong>Teaching</strong>, and <strong>Review</strong> agents work in parallel to deliver a comprehensive learning experience.",
+                feat_2_title: "RAG + Qdrant",
+                feat_2_desc: "Hybrid retrieval using <strong>Dense Vectors</strong> and <strong>SPLADE</strong> ensures the AI teaches you correct, verified algorithm concepts, not hallucinations.",
+                feat_3_title: "Long-term Memory",
+                feat_3_desc: "The system remembers your weak points. 'I struggled with Recursion last week' — CodeCoach knows, and adjusts its teaching accordingly."
+            }
+        };
+
+        function setLang(lang) {
+            const t = translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    el.innerHTML = t[key];
+                }
+            });
+
+            // Update buttons
+            const btnZh = document.getElementById('btn-zh');
+            const btnEn = document.getElementById('btn-en');
+            
+            if (lang === 'zh') {
+                btnZh.className = "px-3 py-1 rounded-full transition-all lang-active";
+                btnZh.style.color = "#4ade80";
+                btnZh.style.fontWeight = "bold";
+                btnEn.className = "px-3 py-1 rounded-full text-gray-400 hover:text-white transition-all";
+                btnEn.style.color = "";
+                btnEn.style.fontWeight = "";
+            } else {
+                btnEn.className = "px-3 py-1 rounded-full transition-all lang-active";
+                btnEn.style.color = "#4ade80";
+                btnEn.style.fontWeight = "bold";
+                btnZh.className = "px-3 py-1 rounded-full text-gray-400 hover:text-white transition-all";
+                btnZh.style.color = "";
+                btnZh.style.fontWeight = "";
+            }
+        }
+    </script>
+</body>
+</html>
