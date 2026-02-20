@@ -1,8 +1,5 @@
 # 🎓 CodeCoach Agent
 
-![Cover Image Placeholder: Suggest adding a screenshot of the Welcome Page or Hero Banner here]
-*(建议在此处添加应用首页截图，展示欢迎界面)*
-
 > 🌟 基于 Agent 的智能算法学习与评测系统 | Multi-Agent Algorithm Learning Platform
 
 [![Status](https://img.shields.io/badge/Status-Active-success.svg)]()
