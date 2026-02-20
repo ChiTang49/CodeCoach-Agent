@@ -1,0 +1,159 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background-color: #444; border-radius: 20px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: #666; }
+
+/* Code Highlighting - Dark Theme */
+.hljs {
+  @apply bg-gray-900 text-gray-200;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  @apply text-purple-400;
+}
+
+.hljs-string {
+  @apply text-green-400;
+}
+
+.hljs-number,
+.hljs-regexp {
+  @apply text-orange-400;
+}
+
+.hljs-comment,
+.hljs-quote {
+  @apply text-gray-500 italic;
+}
+
+.hljs-function .hljs-title,
+.hljs-title {
+  @apply text-blue-400;
+}
+
+.hljs-attribute,
+.hljs-variable,
+.hljs-template-variable {
+  @apply text-cyan-400;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  @apply text-yellow-400;
+}
+
+/* Markdown Code Blocks */
+pre {
+  @apply overflow-x-auto rounded-lg p-4 my-3;
+}
+
+pre code {
+  @apply text-sm;
+}
+
+/* Markdown Headings - Enhanced Styling */
+.prose h1 {
+  @apply text-3xl font-bold text-green-400 mt-6 mb-4 border-b border-gray-700 pb-2;
+}
+
+.prose h2 {
+  @apply text-2xl font-bold text-emerald-400 mt-5 mb-3 border-b border-gray-800 pb-2;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold text-blue-400 mt-4 mb-2;
+}
+
+.prose h4 {
+  @apply text-lg font-semibold text-cyan-400 mt-3 mb-2;
+}
+
+/* Markdown Lists */
+.prose ul {
+  @apply list-disc list-inside space-y-1 my-3 text-gray-300;
+}
+
+.prose ol {
+  @apply list-decimal list-inside space-y-1 my-3 text-gray-300;
+}
+
+.prose li {
+  @apply ml-4;
+}
+
+/* Markdown Blockquotes */
+.prose blockquote {
+  @apply border-l-4 border-green-500 pl-4 py-2 my-3 italic text-gray-400 bg-gray-800/30;
+}
+
+/* Markdown Tables */
+.prose table {
+  @apply w-full border-collapse my-4;
+}
+
+.prose th {
+  @apply bg-gray-800 text-left p-2 border border-gray-700 font-semibold text-gray-200;
+}
+
+.prose td {
+  @apply p-2 border border-gray-700 text-gray-300;
+}
+
+/* Markdown Horizontal Rules */
+.prose hr {
+  @apply border-gray-700 my-6;
+}
+
+/* Markdown Emphasis */
+.prose em {
+  @apply italic text-gray-300;
+}
+
+.prose strong {
+  @apply font-bold text-gray-100;
+}
+
+/* Markdown Links */
+.prose a {
+  @apply text-blue-400 hover:text-blue-300 underline;
+}
+
+/* Paragraph Spacing */
+.prose p {
+  @apply my-3 leading-relaxed;
+}
+

@@ -1,0 +1,63 @@
+# Python 缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 虚拟环境
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Conda
+.conda/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+
+# hello-agents 数据库
+*.db
+*.sqlite
+*.sqlite3
+data/
+memory_db/
+
+# 日志
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# 测试
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 分发
+dist/
+build/
+*.egg-info/
+
+# User Notes
+__note__/
+
+# Local Session Data
+memory_data/*.json
+
+# Node modules
+node_modules/
+
+# Next.js build
+frontend/.next/
